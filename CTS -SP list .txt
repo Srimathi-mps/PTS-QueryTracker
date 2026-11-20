@@ -1,0 +1,718 @@
+USP_TTS_GETCUSTOMERS
+USP_TTS_GetAllJournal
+usp_PTS_GetWIPArticles
+USP_QMS_GetDepartment
+usp_PTS_ValidateCustomerJournalArticle
+usp_Contrast_GetIsbn
+usp_PTS_GetPTSProblemsBy_Article
+USP_deletequerynew
+USP_deletequery
+USP_PTSUpdatequeryNew
+USP_PTS_GETUSERROLEBYUSERNAME
+USP_PTS_GetProblemTypeDetails
+usp_PTS_InsUpd_PTSProblems
+USP_PTS_RESOLVE_PTSPROBLEM_BYID
+
+
+
+
+
+USE [BooksItrack]
+GO
+/****** Object:  StoredProcedure [dbo].[USP_TTS_GetAllJournal]    Script Date: 29-04-2026 10:08:40 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER Procedure [dbo].[USP_TTS_GetAllJournal]
+(
+@jour_ccode int,
+@case nvarchar(30)
+)
+AS
+  BEGIN
+      if(@case='SelectJournal')
+       BEGIN
+           select  jour_code,jour_sname from journal where jour_ccode=@jour_ccode order by jour_sname
+       END
+   END
+
+
+USE [BooksItrack]
+GO
+/****** Object:  StoredProcedure [dbo].[USP_TTS_GETCUSTOMERS]    Script Date: 29-04-2026 10:09:30 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER PROCEDURE [dbo].[USP_TTS_GETCUSTOMERS]   
+(  
+@Cust_grname varchar(100) =NULL,  
+@User_Role   int          =0,  
+@User_Code   varchar(50)  =NULL  
+)  
+  
+AS  
+  BEGIN  
+     
+     if(@User_Role=2)   
+   BEGIN        
+     SELECT * FROM CUSTOMER order by cust_sname  
+   END  
+     else  
+         BEGIN  
+           
+         Select distinct C.Cust_code,C.Cust_fname  cust_sname
+           from Customer C  
+           INNER JOIN tbl_TTS_UserCustomerMapping PUM ON  C.Cust_code=PUM.CustomerId  
+           where    PUM.UserCode=@User_Code  
+           
+         END     
+       
+  END  
+    
+USE [BooksItrack]
+GO
+/****** Object:  StoredProcedure [dbo].[usp_PTS_GetWIPArticles]    Script Date: 29-04-2026 10:10:32 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================      
+-- Author  : Thiras    
+-- Create date : 07/11/2013    
+-- Description : Retrieving WIP volumes and issues    
+-- =============================================    
+-- Prasanta | 27 Nov 2013 | updated to upper case  
+-- =============================================      
+-- SELECT * FROM  LKP_SUBSTAGE  
+
+--SELECT * FROM JOURNAL WHERE Jour_sname ='apen'  
+--  [usp_PTS_GetWIPArticles] 49,4821  
+ALTER PROCEDURE [dbo].[usp_PTS_GetWIPArticles]      
+	@customerCode int=0,      
+	@journalCode int=0 ,     
+	@Volume varchar(20) = '0',
+	@Issue varchar(20) = '0'
+AS      
+BEGIN      
+	SET NOCOUNT ON;      
+	DECLARE @JOBID INT
+	
+	SELECT  @JOBID = JOBID FROM JOURNAL WITH(NOLOCK) WHERE Jour_ccode=@CUSTOMERCODE 
+	AND Jour_code=@JOURNALCODE 
+	
+	if exists( SELECT  1    
+	FROM ARTICLE A WITH(NOLOCK)  WHERE A.Art_Ccode=@CUSTOMERCODE 
+	AND A.Art_Jcode=@JOURNALCODE 
+	AND A.JobChapterID IN (   SELECT JobChapterId FROM TBL_JOB_CHAPSTAGEDETAILS R   WITH(NOLOCK)  
+	where JobId=@JOBID AND (R.STAGERECEIVEDDATE <> '1900/01/01' AND R.STAGERECEIVEDDATE IS NOT NULL) 
+	AND (R.DISPATCHDATE = '1900/01/01' OR R.DISPATCHDATE IS NULL )     )  
+	 
+	and (  @Volume  = '0' or Art_volno = RTRIM(@Volume) ) and (@Issue = '0' or Art_issno = @Issue))
+	begin
+		 SELECT  UPPER(RTRIM(LTRIM(ART_ACODE))) AS FIELDID ,UPPER(RTRIM(LTRIM(JobChapterID))) AS FIELDNAME     
+		 FROM ARTICLE A   WITH(NOLOCK)   
+		 WHERE A.Art_Ccode=@CUSTOMERCODE AND A.JobChapterID IN (   SELECT JobChapterId FROM TBL_JOB_CHAPSTAGEDETAILS R  WITH(NOLOCK)
+		 WHERE JobId=@JOBID AND (R.STAGERECEIVEDDATE <> '1900/01/01' AND R.STAGERECEIVEDDATE IS NOT NULL) AND (R.DISPATCHDATE = '1900/01/01' OR R.DISPATCHDATE IS NULL )     )  
+		 AND A.Art_Jcode=@JOURNALCODE  
+		 and (  @Volume  = '0' or Art_volno = RTRIM(@Volume) ) and (@Issue = '0' or Art_issno = @Issue)-- and isnull(TypeSetterName,'')!='MPS'
+		 order by FIELDID 
+	end
+	else
+	begin
+		SELECT  UPPER(RTRIM(LTRIM(ART_ACODE))) AS FIELDID ,UPPER(RTRIM(LTRIM(JobChapterID))) AS FIELDNAME     
+		FROM ARTICLE A  WITH(NOLOCK)   
+		WHERE A.Art_Ccode=@CUSTOMERCODE AND A.JobChapterID IN (   SELECT JobChapterId FROM TBL_JOB_CHAPSTAGEDETAILS R WITH(NOLOCK) 
+		WHERE JobId=@JOBID AND (R.STAGERECEIVEDDATE <> '1900/01/01' AND R.STAGERECEIVEDDATE IS NOT NULL) AND R.SubStageId = 23  )  
+		AND A.Art_Jcode=@JOURNALCODE  
+		and (  @Volume  = '0' or Art_volno = RTRIM(@Volume) ) and (@Issue = '0' or Art_issno = @Issue)-- and isnull(TypeSetterName,'')!='MPS'
+		order by FIELDID 
+	end
+
+	--AND R.SubStageId = @SUBSTAGEID [Ram]    
+
+END      
+  
+  
+USE [BooksItrack]
+GO
+/****** Object:  StoredProcedure [dbo].[USP_QMS_GetDepartment]    Script Date: 29-04-2026 10:11:11 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER Procedure [dbo].[USP_QMS_GetDepartment]
+AS
+ BEGIN
+ 
+         select DepartmentId as fieldId,DepartmentName as fieldName from LKP_ProductionDepartment where IsActive=1
+ END 
+
+USE [BooksItrack]
+GO
+/****** Object:  StoredProcedure [dbo].[usp_PTS_ValidateCustomerJournalArticle]    Script Date: 29-04-2026 10:12:03 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+-- =============================================  
+-- Author:  <Author,,Name>  
+-- Create date: <Create Date,,>  
+-- Description: <Description,,>  
+-- =============================================  
+-- prasanta |	07 Mar 2013 |	cust_fname added in stade of cust_grname
+
+-- =============================================  
+-- [usp_PTS_ValidateCustomerJournalArticle] 'ELSE','BIOS','BIOSD1401301'  
+
+ALTER PROCEDURE [dbo].[usp_PTS_ValidateCustomerJournalArticle]   
+ --@customerGroupName nvarchar(50)=null,  
+ @custFName nvarchar(50)=null,  
+ @journalName nvarchar(50)=null,  
+ @article nvarchar(50)=null,  
+ @errorMessage nvarchar(200)=null output  
+AS  
+BEGIN  
+ -- SET NOCOUNT ON added to prevent extra result sets from  
+ -- interfering with SELECT statements.  
+ SET NOCOUNT ON;  
+
+ 	declare @JobchapterId BIGINT
+	
+	select @JobchapterId = art.jobchapterid from article art with(nolock)
+	 inner join journal jl  with(nolock)  
+  on art.art_ccode=jl.jour_ccode and art.art_jcode=jl.jour_code  and art.art_acode=@article
+  inner join customer cust  with(nolock) on cust.cust_code=jl.jour_ccode   
+  where jl.jour_sname=@journalName and cust.cust_grname=@custFName
+
+	
+  
+    -- Insert statements for procedure here  
+ if not exists(select cust_grname from customer where cust_grname=@custFName)  
+ --if not exists(select Cust_fname from customer where Cust_sname=@custFName)  
+ begin  
+  set @errorMessage='The customer entered does not exist'  
+ end  
+ else if not exists(select cust.cust_sname,cust_grname,jour_sname,jour_code from journal jl with(nolock)  inner join customer cust with(nolock)    
+  on cust.cust_code=jl.jour_ccode where jl.jour_sname=@journalName and cust.cust_grname=@custFName )  
+ begin  
+  set @errorMessage='The journal entered does not exist'  
+ end  
+ else if not exists(select art.art_ccode,art.art_jcode,art.art_acode from article art with(nolock) inner join journal jl  with(nolock)  
+  on art.art_ccode=jl.jour_ccode and art.art_jcode=jl.jour_code inner join customer cust  with(nolock) on cust.cust_code=jl.jour_ccode   
+  where jl.jour_sname=@journalName and cust.cust_grname=@custFName and art.art_acode=@article)  
+ begin  
+  set @errorMessage='The article entered does not exist'  
+ end  
+ -- else if  exists(select art.art_ccode,art.art_jcode,art.art_acode from article art inner join journal jl   
+ -- on art.art_ccode=jl.jour_ccode and art.art_jcode=jl.jour_code inner join customer cust on cust.cust_code=jl.jour_ccode   
+ -- where jl.jour_sname=@journalName and cust.cust_grname=@custFName and art.art_acode=@article and isnull(art.TypeSetterName,'')='MPS')  
+ --begin  
+ -- set @errorMessage='The problem task cannot be raised for article with MPS typesetter'   
+ --end 
+  else if not exists(select 1 from tbl_Job_ChapStageDetails jcs  with(nolock) where jcs.JobChapterId = @JobchapterId)  
+ begin  
+  set @errorMessage='The article is not logged in'  
+ end  
+ else  
+ begin  
+  set @errorMessage=''  
+ end 
+ PRINT  @errorMessage
+END  
+  
+USE [BooksItrack]
+GO
+/****** Object:  StoredProcedure [dbo].[usp_Contrast_GetIsbn]    Script Date: 29-04-2026 10:12:43 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+  
+-- =============================================  
+-- Author:  <Author,,Soumya>  
+-- Create date: <Create Date,,07-03-2017>  
+-- Description: <Description,,>  
+-- =============================================  
+  
+-- exec usp_Contrast_GetIsbn 1630080  
+ALTER PROCEDURE [dbo].[usp_Contrast_GetIsbn]  
+ @bookid int  
+AS  
+Declare @jobid int  
+   
+BEGIN  
+ --select @jobid=jobid from Journal where ltrim(rtrim(jour_sname)) like '%'+ CAST(@bookid AS NVARCHAR) + '%'  
+ select @jobid=jobid from Journal where jour_code=@bookid  
+ SELECT j.Jour_issn_no, Jour_Online_ISSN, hard_isbn,si.manifestisbn  from Journal j inner join Itrack_SpecInstruction SI on j.Jour_code=si.jourcode 
+ where J.JobID=@jobid  
+END  
+  
+  USE [BooksItrack]
+GO
+/****** Object:  StoredProcedure [dbo].[usp_PTS_GetPTSProblemsBy_Article]    Script Date: 29-04-2026 10:13:29 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================  
+-- Author		: Thiras
+-- Create date	: 07/11/2013
+-- Description	: Retrieving Problems
+-- =============================================  
+ALTER PROCEDURE [dbo].[usp_PTS_GetPTSProblemsBy_Article]
+	@customerCode int=null,
+	@journalCode int=null,
+	@article varchar(50)=null,
+	@SubStageID INT=null
+AS
+BEGIN
+	
+	SET NOCOUNT ON;
+
+	select pts.ID,SUBSTAGEID,CustomerCode,Journal,Article,isnull(DepartmentId,0) DepartmentId,Volume,
+Issue,PTSRemarks,TaskClosed,ReportedDate,UserCode,ProblemTypeCode,ProblemMsgID,ZipFileUpload,QuerySavedBy,
+QuerySavedDate,QueryClosedBy,QueryClosedDate,QueryType,CreatedBy,CreatedDate,LastUpdatedBy,
+LastUpdatedDate,TaskClosedDate,PtsDueDate,ZipFilePath,Sequence,rtrim(ltrim(pts.QuerySavedBy)) as username,JobChapterStageID jobChapStageID from tbl_PTS_Problem pts 
+	where CustomerCode=@customerCode and Journal=@journalCode and Article=@article and SUBSTAGEID=@SubStageID
+END
+
+
+USE [BooksItrack]
+GO
+/****** Object:  StoredProcedure [dbo].[USP_deletequeryNew]    Script Date: 29-04-2026 10:14:17 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- [USP_deletequeryNew] 346,'We are not able to judge on the breaking of equation eqn ids appearing on pages page ids. Please suggest.','okDoneWe are not able to judge on the breaking of equation eqn ids appearing on pages page ids. Please suggest.','update'
+ALTER proc [dbo].[USP_deletequeryNew](@ID int,@Reamarks varchar(max),@Response varchar(max),@type varchar(50))
+AS
+BEGIN
+
+--select GETDATE()
+	if @type='delete'
+	BEGIN
+		delete from tbl_PTS_Problem where ID=@ID
+		delete from tbl_PTS_ProblemDetails where ProblemID=@ID
+	END
+	if @type='update'
+	BEGIN
+	
+		if @Response=''
+		BEGIN
+		print 'ok'
+			update tbl_PTS_Problem set PTSRemarks=@Reamarks where ID=@ID
+			update  tbl_PTS_ProblemDetails set PTCategoryRemark=@Reamarks where ProblemID=@ID
+		END
+		else		
+		BEGIN
+		print 'Not ok'
+			Update  tbl_PTS_ProblemHistory set PTSRemarks=@Reamarks,PTSQueryResolveRemarks=@Response where ID=@ID
+        END
+	END
+	
+END
+
+--USP_deletequery 498
+
+
+USE [BooksItrack]
+GO
+/****** Object:  StoredProcedure [dbo].[USP_deletequery]    Script Date: 29-04-2026 10:15:00 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+ALTER proc [dbo].[USP_deletequery](@ID int,@Reamarks varchar(max)=null,@type varchar(50))
+AS
+BEGIN
+
+--select GETDATE()
+	if @type='delete'
+	BEGIN
+		delete from tbl_PTS_Problem where ID=@ID
+		delete from tbl_PTS_ProblemDetails where ProblemID=@ID
+	END
+	if @type='update'
+	BEGIN
+		update tbl_PTS_Problem set PTSRemarks=@Reamarks where ID=@ID
+		update  tbl_PTS_ProblemDetails set PTCategoryRemark=@Reamarks where ProblemID=@ID
+	END
+	
+END
+
+--USP_deletequery 498
+
+
+USE [BooksItrack]
+GO
+/****** Object:  StoredProcedure [dbo].[USP_PTSUpdatequeryNew]    Script Date: 29-04-2026 10:15:43 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+-- [USP_deletequeryNew] 346,'We are not able to judge on the breaking of equation eqn ids appearing on pages page ids. Please suggest.','okDoneWe are not able to judge on the breaking of equation eqn ids appearing on pages page ids. Please suggest.','update'
+--exec USP_PTSUpdatequeryNew 24344,0,'UpdateApprove'
+ALTER proc [dbo].[USP_PTSUpdatequeryNew](
+@ID int,
+@Proceed_Req bit=null,
+@type varchar(50))
+AS
+declare @GetProceed_Req varchar(100)
+BEGIN
+
+	
+	if @type='UpdateApprove'
+	BEGIN
+		BEGIN
+		--print 'ok'
+			update tbl_PTS_Problem set Proceed_Req=@Proceed_Req where ID=@ID
+			--update  tbl_PTS_ProblemDetails set Proceed_Req=@Reamarks where ProblemID=@ID
+		END
+		
+	END
+	if (@type='GetInitiateFile')
+	begin
+		
+		select @GetProceed_Req= Proceed_Req from tbl_PTS_Problem where ID=@ID and  QueryType='INSTRUCTION'
+		if(@GetProceed_Req in (0))
+		begin
+		select 'Fail' as Status
+		--select 'Success' as Status
+		end
+		else
+		begin
+		select 'Success' as Status
+		--select 'Fail' as Status
+		end
+	end
+	
+END
+
+USE [BooksItrack]
+GO
+/****** Object:  StoredProcedure [dbo].[USP_PTS_GETUSERROLEBYUSERNAME]    Script Date: 29-04-2026 10:16:23 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- AUTHOR:		<AUTHOR,,NAME>
+-- CREATE DATE: <CREATE DATE,,>
+-- DESCRIPTION:	<DESCRIPTION,,>
+-- =============================================
+ALTER PROCEDURE [dbo].[USP_PTS_GETUSERROLEBYUSERNAME]
+	@USERNAME VARCHAR(100)
+AS
+BEGIN
+	SET NOCOUNT ON
+	
+	SELECT MAPPINGID,USERNAME,UM.ROLEID,UR.ROLENAME FROM TBL_PTS_USERROLEMAPPING UM 
+	INNER JOIN LKP_PTS_USERROLE UR ON UM.ROLEID=UR.ROLEID 
+	WHERE USERNAME=@USERNAME
+	
+END
+
+
+USE [BooksItrack]
+GO
+/****** Object:  StoredProcedure [dbo].[USP_PTS_GetProblemTypeDetails]    Script Date: 29-04-2026 10:17:01 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		Prasanta Kumar Sahoo
+-- Create date: 02 Mar 2015
+-- Description:	Get all problem type details
+-- =============================================
+--[USP_PTS_GetProblemTypeDetails] 49,'',3554,1,'',''
+ALTER PROCEDURE [dbo].[USP_PTS_GetProblemTypeDetails]
+	@CustomerCode int
+,	@JournalCode Varchar(500)
+,	@JobChapterID  Varchar(500)
+,	@StageID INT
+,	@Volume VARCHAR(3) = null
+,	@Issue VARCHAR(3) = null
+AS
+BEGIN
+	SET NOCOUNT ON;
+	
+	DECLARE @PCURL VARCHAR(max)
+	set @PCURL = ''
+	SELECT @PCURL = PCMCUrl from tbl_ArticleOrginal where JobChapterId = @JobChapterID
+	set @PCURL = ISNULL( ' For author corrections please refer below Proof Central URL: ' + @PCURL , '')
+
+	SELECT	ProblemTypeID,Cust_Code,Code,SubStageId,DepartmentId,REPLACE(Long_Desc,'<<PCMUrl>>', @PCURL) Long_Desc, REPLACE(Short_Desc,'<<PCMUrl>>',' For author corrections please refer below Proof Central URL: ' + @PCURL)  Short_Desc 
+	FROM	LKP_PTS_ProblemType 
+	WHERE	IsActive = 1 AND SubStageId = @StageID and Cust_Code = @CustomerCode
+	
+END
+
+USE [BooksItrack]
+GO
+/****** Object:  StoredProcedure [dbo].[usp_PTS_InsUpd_PTSProblems]    Script Date: 29-04-2026 10:17:46 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+-- =============================================                                
+-- Author:  Prasanta Kumar Sahoo                                
+-- Create date: 25 Feb 2015
+-- Description: Ins Updt PTS Problems                              
+-- =============================================                                
+
+-- =============================================                        
+ALTER PROCEDURE [dbo].[usp_PTS_InsUpd_PTSProblems]                                
+		 @SubstageID	int,                                
+		 @stage			varchar(20),                                
+		 @customerCode	int,                                
+		 @journalCode	int,                                
+		 @article		varchar(20)=null,                           
+		 @DepartmentId	int=0,                               
+		 @volume		varchar(10)=null,                                
+		 @issue			varchar(10)=null,                                
+		 @ptsRemarks	varchar(Max),      
+		                                 
+		 @taskclosed	bit,                                
+		 @userCode		varchar(50),                                
+		 @problemTypeCode	varchar(5),                                
+		 @zipFileUpload	bit,                                
+		 @querySavedBy	varchar(50),                                
+		 @queryClosedBy	varchar(50),        
+		                               
+		 @msgID			varchar(11)=null,                               
+		 @ZipFilePath	NVARCHAR(1000),                          
+		 @Sequence		NVARCHAR(100),            
+		 @RoundCount	INT,          
+		 --added by shiva          
+		 @FILECONTENT	nVarchar(max),                      
+		 ------          
+		 @insertStatus	varchar(500) output                                
+AS                                
+BEGIN                                
+		 declare @JOBCHAPTERID INT, @JobId INT, @JobIssueStageId  INT             
+		 --added by shiva
+		 declare @JOBCHAPTERSTAGEID BIGINT          
+		 declare @ProbID int          
+		 DECLARE @DocHandle int          
+		 DECLARE @xmlString nvarchar(max)             
+			EXEC sp_xml_preparedocument @DocHandle OUTPUT, @FILECONTENT            
+			-------          
+		 print '1'                                
+		                              
+		 SELECT @JOBCHAPTERID = JobChapterID FROM Article WHERE Art_Ccode =@customerCode AND Art_Jcode = @journalCode AND Art_Acode = @article 
+		 SELECT @JobId = JobId FROM Journal WHERE Jour_ccode =@customerCode AND Jour_code = @journalCode 
+
+		 --if @SubstageID <> 5
+			SELECT @JOBCHAPTERSTAGEID = JobChapterStageID FROM tbl_Job_ChapStageDetails 
+			WHERE  JobChapterId = @JOBCHAPTERID AND  SubStageId= @SubstageID AND  DispatchDate is null 
+			order by JobChapterStageID desc   
+
+		 --else
+		 	SELECT @JobIssueStageId = JobIssueStageId 
+			FROM tbl_Job_IssueStageDetails 
+			WHERE  JobId = @JobId AND  SubStageId= @SubstageID --and customerstagename = @stage
+			and Volume =  @volume and Issue = @issue AND  DispatchDate is null 
+			order by JobIssueStageId desc                     	
+
+		 print '@JOBCHAPTERID'                                
+		 print @JOBCHAPTERID                                
+		                             
+		 declare @seq int, @seq1 int ,@seq2 int                          
+		                        
+		 select @seq = 0,@seq1 = 0,@seq2 = 0                          
+		           
+		 SELECT  @seq1 = max(Sequence)                            
+		 FROM tbl_PTS_ProblemHistory                             
+		 WHERE Customer=@customerCode AND LTRIM(RTRIM(Journal))=@journalCode                                 
+		   AND LTRIM(RTRIM(Article))=@Article AND LTRIM(RTRIM(SubStageId))=@SubStageId             
+		                            
+		 PRINT '1'                     
+		 SELECT  @seq2 = max(Sequence)                            
+		 FROM tbl_PTS_Problem                          
+		 WHERE CustomerCode=@customerCode AND LTRIM(RTRIM(Journal))=@journalCode                                 
+		   AND LTRIM(RTRIM(Article))=@Article AND LTRIM(RTRIM(SubStageId))=@SubStageId             
+		 PRINT '2'                            
+		 if(isnull(@seq1,0) > isnull(@seq2,0))                          
+		  set @Sequence = isnull(@seq1,0) + 1                          
+		 else                          
+		  set @Sequence = isnull(@seq2,0) + 1               
+		 PRINT '3'     
+		                      
+		 --article level insertion/updation                                
+		 insert into tbl_PTS_Problem(SubStageId,CustomerCode,journal,article,Volume,Issue,DepartmentId,ptsremarks,taskclosed,reporteddate,                                
+			usercode,problemTypeCode,ProblemMsgID,ZipFileUpload,querysavedBy,querysavedDate,queryclosedby,querycloseddate,ZipFilePath,Sequence,JobChapterId,RoundCount,JobChapterStageID,CustomerStageName,JobIssueStageID)                                
+			values(@SubStageId,@customerCode,@journalCode,@article,@volume,@issue,@DepartmentId,@ptsremarks,@taskclosed,getdate(),@usercode,@problemTypeCode,                                
+			@msgID,@zipFileUpload,@querySavedBy,getdate(),null,null,@ZipFilePath,@Sequence,@JOBCHAPTERID,@RoundCount,@JOBCHAPTERSTAGEID,@stage,@JobIssueStageId)                                
+	             
+		   ----added by shiva          
+			set @ProbID = IDENT_CURRENT('tbl_PTS_Problem')
+			          
+			INSERT INTO  tbl_PTS_ProblemDetails(ProblemID,ProblemTypeID,ProblemTypeCategoryID,PTCategoryRemark,DepartmentID )          
+							SELECT  @ProbID,ProblemTypeId,ProblemCategoryId,PTCategoryRemark,DepartmentID     FROM           
+			OPENXML           
+			(@DocHandle, '/Details/ProblemType',2)          
+			WITH(                 
+			ProblemTypeId		 nvarchar(50)	'ProblemTypeId'          
+		   ,ProblemTypeCode		 nvarchar(50)	'ProblemTypeCode'          
+		   ,ProblemCategoryId	 INT			'ProblemCategoryId'        
+		   ,PTCategoryRemark	 NVARCHAR(MAX)  'PTCategoryRemark' 
+		    ,DepartmentID		 INT			'DepartmentID'           
+			)          
+		   ----till here added by shiva          
+		             
+					                                   
+			--if @SubstageID <> 5
+			--begin		                                   
+				update tbl_Job_ChapStageDetails set IsQuery = CASE WHEN @taskclosed = 1 THEN 2 ELSE 1 END 
+				where JobChapterStageID =@JOBCHAPTERSTAGEID 
+				and SubStageId = @SUBSTAGEID and ISNULL(IsQuery,0) in(0,3)
+			--end
+			--else
+			--begin
+				update tbl_Job_IssueStageDetails set IsQuery = CASE WHEN @taskclosed = 1 THEN 2 ELSE 1 END 
+				where --JobId =@JobId and Volume = @volume and Issue =@issue and SubStageId = @SUBSTAGEID
+				JobIssueStageId = @JobIssueStageId and ISNULL(IsQuery,0) in(0,3)
+				--and CustomerStageName = @stage and JobIssueStageId = @JobIssueStageId
+			--end
+			
+			update tbl_PTS_Problem  set   ProblemMsgID =@ProbID where ID = @ProbID     
+			
+			set @insertStatus='Insertion successful'                   
+                                 
+END 
+USE [BooksItrack]
+GO
+/****** Object:  StoredProcedure [dbo].[USP_PTS_RESOLVE_PTSPROBLEM_BYID]    Script Date: 29-04-2026 10:18:43 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+          
+--================================================            
+-- prasanta | 13Mar2014 | Sequence field added        
+-- prasatna | 11Dec2014   | @STATUS = 'QUERY RESPONSE MADE SUCCESSFULLY'      
+--================================================                
+-- [USP_PTS_RESOLVE_PTSPROBLEM] '1','63','1876','IOPTEST1','','','11/09/2013',''                
+-- [USP_PTS_RESOLVE_PTSPROBLEM] '1','63','1877','','1','2','1', '11/09/2013','pts test', 'spadmin', 'PE18', ''                
+--================================================                
+        
+ALTER PROCEDURE [dbo].[USP_PTS_RESOLVE_PTSPROBLEM_BYID]                 
+(                
+  @ID INT,      
+  @PTSQueryResolveRemarks varchar(1000)=NULL,                
+  @ResolvedBy VARCHAR(50),              
+  @STATUS VARCHAR(300) OUTPUT                                  
+)                
+as                                    
+--BEGIN TRANSACTION                                    
+  DECLARE @PTSREMARKS VARCHAR(800),                                  
+          @REPORTEDDATE DATETIME,                                
+          @TASKCLOSED BIT,                                
+          @USERCODE SMALLINT,                              
+          @MSGID INT,                  
+          @TASKCLOSEDDATE DATETIME,                
+          @OLDDUEDATE DATETIME,      
+          --below variable added by shiva      
+          @JOBCHAPTERSTAGEID BIGINT                 
+                                        
+BEGIN                                                               
+	  DECLARE @JOBCHAPTERID INT     ,@PROBID INT   ,   @SUBSTAGEID INT ,@JOBISSUESTAGEID INT  
+	  
+	  SELECT @JOBCHAPTERID = JOBCHAPTERID,@SUBSTAGEID = SUBSTAGEID,@JOBCHAPTERSTAGEID= JobChapterStageID, @JOBISSUESTAGEID = JobIssueStageID
+	  from TBL_PTS_PROBLEM                 
+	  WHERE ID = @ID      
+	                           
+	   
+	  INSERT INTO  [TBL_PTS_PROBLEMHISTORY](SUBSTAGEID,CUSTOMER,JOURNAL,ARTICLE,DEPARTMENTID,VOLUME,ISSUE,PTSREMARKS,REPORTEDDATE,REOPENEDDATE,USERCODE,PROBLEMMSGID,OLD_PTS_DUE_DATE,NEW_PTS_DUE_DATE,PROBLEMRESOLVED,PTSQUERYRESOLVEREMARKS,                
+	  QUERYTYPE,QUERYSAVEDBY,QUERYSAVEDDATE,QUERYCLOSEDBY,QUERYCLOSEDDATE,QUERYRESOLVEDDATE,QUERYRESOLVEDBY,TASKCLOSED,ZIPFILEUPLOAD,SEQUENCE,PROBLEMTYPECODE,JOBCHAPTERID,ROUNDCOUNT,JobChapterStageID,ZipFilePath,JobIssueStageID)                                   
+	      
+	  SELECT SUBSTAGEID,CUSTOMERCODE,JOURNAL,ARTICLE,DEPARTMENTID,VOLUME,ISSUE,PTSREMARKS,REPORTEDDATE,GETDATE(),USERCODE,PROBLEMMSGID, PTSDUEDATE,GETDATE(),1,@PTSQUERYRESOLVEREMARKS,                
+	  QUERYTYPE,QUERYSAVEDBY,QUERYSAVEDDATE,QUERYCLOSEDBY,QUERYCLOSEDDATE,GETDATE(),@RESOLVEDBY,TASKCLOSED,ZIPFILEUPLOAD ,SEQUENCE ,PROBLEMTYPECODE,JOBCHAPTERID ,ROUNDCOUNT,@JOBCHAPTERSTAGEID,ZipFilePath,JobIssueStageID             
+	  FROM TBL_PTS_PROBLEM                 
+	  WHERE ID = @ID      
+	      
+	  SET @PROBID = IDENT_CURRENT('TBL_PTS_PROBLEMHISTORY')      
+	  INSERT INTO  TBL_PTS_PROBLEMHISTORYDETAILS(PROBLEMHISTORYID,PROBLEMTYPEID,PROBLEMTYPECATEGORYID,PTCategoryRemark,DepartmentID)      
+	  SELECT    @PROBID,PROBLEMTYPEID,ProblemTypeCategoryID,PTCategoryRemark ,DepartmentID   FROM  TBL_PTS_PROBLEMDETAILS      
+	   WHERE PROBLEMID = @ID      
+	  ----TILL HERE ADDED BY SHIVA      
+	      
+	      
+	  SET @TASKCLOSED = @@ROWCOUNT   
+	  
+	  IF NOT EXISTS (SELECT 1 FROM tbl_PTS_Problem WHERE JOBCHAPTERSTAGEID = @JOBCHAPTERSTAGEID AND ID <> @ID)
+		UPDATE TBL_JOB_CHAPSTAGEDETAILS SET ISQUERY = 3 WHERE JOBCHAPTERSTAGEID = @JOBCHAPTERSTAGEID          
+	    
+	IF NOT EXISTS (SELECT 1 FROM tbl_PTS_Problem WHERE jobissuestageid = @JOBISSUESTAGEID AND ID <> @ID)
+		UPDATE tbl_Job_IssueStageDetails  SET ISQUERY = 3 WHERE jobissuestageid = @JOBISSUESTAGEID 
+	     
+	          
+	  DELETE FROM TBL_PTS_PROBLEM                 
+	  WHERE  ID = @ID      
+	  DELETE FROM TBL_PTS_PROBLEMDETAILS      
+		 WHERE PROBLEMID = @ID      
+	           
+			   
+			--UPDATE [DDNGtsPro].[GTSPro].[dbo].tbl_Job_ChapStageDetails SET IsQuery = 0   
+			--WHERE TrackJobChapterStageID = @JobchapterStageID AND DispatchDate IS NULL and BatchNo = 1  
+	                
+	  SET @STATUS = 'QUERY RESPONSE MADE SUCCESSFULLY'                 
+	         
+	  PRINT @STATUS                
+	                             
+END 
+
+USE [BooksItrack]
+GO
+/****** Object:  StoredProcedure [dbo].[USP_PTSUpdatequeryNew]    Script Date: 29-04-2026 10:19:21 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+-- [USP_deletequeryNew] 346,'We are not able to judge on the breaking of equation eqn ids appearing on pages page ids. Please suggest.','okDoneWe are not able to judge on the breaking of equation eqn ids appearing on pages page ids. Please suggest.','update'
+--exec USP_PTSUpdatequeryNew 24344,0,'UpdateApprove'
+ALTER proc [dbo].[USP_PTSUpdatequeryNew](
+@ID int,
+@Proceed_Req bit=null,
+@type varchar(50))
+AS
+declare @GetProceed_Req varchar(100)
+BEGIN
+
+	
+	if @type='UpdateApprove'
+	BEGIN
+		BEGIN
+		--print 'ok'
+			update tbl_PTS_Problem set Proceed_Req=@Proceed_Req where ID=@ID
+			--update  tbl_PTS_ProblemDetails set Proceed_Req=@Reamarks where ProblemID=@ID
+		END
+		
+	END
+	if (@type='GetInitiateFile')
+	begin
+		
+		select @GetProceed_Req= Proceed_Req from tbl_PTS_Problem where ID=@ID and  QueryType='INSTRUCTION'
+		if(@GetProceed_Req in (0))
+		begin
+		select 'Fail' as Status
+		--select 'Success' as Status
+		end
+		else
+		begin
+		select 'Success' as Status
+		--select 'Fail' as Status
+		end
+	end
+	
+END

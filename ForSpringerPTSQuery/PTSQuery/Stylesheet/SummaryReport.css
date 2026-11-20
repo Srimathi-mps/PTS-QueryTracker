@@ -1,0 +1,49 @@
+﻿body
+{
+	height: 100%;
+}
+html
+{
+	height:100%;
+}
+.DateTextbox
+{
+	font-family:Verdana,Arial;
+	font-size:11px;
+	font-weight:normal;
+	height:17px;
+	border-bottom-style:solid;
+	border-width:1px;
+	border-color:Black;
+	width:80px;
+}
+.gridText
+{
+	vertical-align: top;
+	font-family:Verdana,Arial;
+	font-size:12px;
+	height:30px;
+}
+.SummaryReportHeading
+{
+	font-family:Verdana,Arial;
+	font-size:16px;
+	font-weight:bold;
+}
+.SummaryReportLabel
+{
+	font-family:Verdana,Arial;
+	font-size:14px;
+	font-weight:bold;
+	width:100px;
+}
+
+
+
+
+td {
+	vertical-align: top;
+	font-family:Verdana,Arial;
+	font-size:12px;
+	height:30px;
+}

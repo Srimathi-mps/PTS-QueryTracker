@@ -1,0 +1,24 @@
+﻿Comparing files D:\SRIMATHI\PROJECTS\004_PTSQUERY\PTSQUERY\QueryTracker.csproj and D:\SRIMATHI\PROJECTS\004_PTSQUERY\FORSPRINGERPTSQUERY\PTSQUERY\QUERYTRACKER.CSPROJ
+***** D:\SRIMATHI\PROJECTS\004_PTSQUERY\PTSQUERY\QueryTracker.csproj
+    <UseIISExpress>false</UseIISExpress>
+    <Use64BitIISExpress />
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+  </PropertyGroup>
+***** D:\SRIMATHI\PROJECTS\004_PTSQUERY\FORSPRINGERPTSQUERY\PTSQUERY\QUERYTRACKER.CSPROJ
+    <UseIISExpress>false</UseIISExpress>
+  </PropertyGroup>
+*****
+
+***** D:\SRIMATHI\PROJECTS\004_PTSQUERY\PTSQUERY\QueryTracker.csproj
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+***** D:\SRIMATHI\PROJECTS\004_PTSQUERY\FORSPRINGERPTSQUERY\PTSQUERY\QUERYTRACKER.CSPROJ
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+*****
+

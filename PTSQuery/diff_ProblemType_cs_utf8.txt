@@ -1,0 +1,25 @@
+﻿Comparing files D:\SRIMATHI\PROJECTS\004_PTSQUERY\PTSQUERY\ProblemType.aspx.cs and D:\SRIMATHI\PROJECTS\004_PTSQUERY\FORSPRINGERPTSQUERY\PTSQUERY\PROBLEMTYPE.ASPX.CS
+***** D:\SRIMATHI\PROJECTS\004_PTSQUERY\PTSQUERY\ProblemType.aspx.cs
+        PTSProblem Obj = new PTSProblem();
+        protected string userName = "";//Global.Validate();
+        //protected string userName = "MAC006081";
+        int count = 0;
+***** D:\SRIMATHI\PROJECTS\004_PTSQUERY\FORSPRINGERPTSQUERY\PTSQUERY\PROBLEMTYPE.ASPX.CS
+        PTSProblem Obj = new PTSProblem();
+        //protected string userName = "";//Global.Validate();
+        protected string userName = "MAC006081";
+        int count = 0;
+*****
+
+***** D:\SRIMATHI\PROJECTS\004_PTSQUERY\PTSQUERY\ProblemType.aspx.cs
+                if (Session["userName"] == null)
+                { userName = Global.Validate(); WriteLog("No session : " + userName); Session["userName"] = userName; }
+                else { userName = Session["userName"].ToString(); WriteLog("session" + userName); }
+***** D:\SRIMATHI\PROJECTS\004_PTSQUERY\FORSPRINGERPTSQUERY\PTSQUERY\PROBLEMTYPE.ASPX.CS
+                if (Session["userName"] == null)
+                {
+                    //userName = Global.Validate(); 
+                    WriteLog("No session : " + userName); Session["userName"] = userName; }
+                else { userName = Session["userName"].ToString(); WriteLog("session" + userName); }
+*****
+

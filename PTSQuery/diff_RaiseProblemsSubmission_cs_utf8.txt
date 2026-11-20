@@ -1,0 +1,11 @@
+﻿Comparing files D:\SRIMATHI\PROJECTS\004_PTSQUERY\PTSQUERY\RaiseProblemsSubmission.aspx.cs and D:\SRIMATHI\PROJECTS\004_PTSQUERY\FORSPRINGERPTSQUERY\PTSQUERY\RAISEPROBLEMSSUBMISSION.ASPX.CS
+***** D:\SRIMATHI\PROJECTS\004_PTSQUERY\PTSQUERY\RaiseProblemsSubmission.aspx.cs
+                        SqlHelper sql = new SqlHelper();
+                        DataSet DS_dept = sql.GetDataSetFromSP("USP_GetDept_New", params1, 2);
+                        gddlDepartment.Items.Insert(0, Request.QueryString["DeptName"].Trim());
+***** D:\SRIMATHI\PROJECTS\004_PTSQUERY\FORSPRINGERPTSQUERY\PTSQUERY\RAISEPROBLEMSSUBMISSION.ASPX.CS
+                        SqlHelper sql = new SqlHelper();
+                        DataSet DS_dept = sql.GetDataSetFromSP("USP_GetDept_UAT_V1", params1, 2);
+                        gddlDepartment.Items.Insert(0, Request.QueryString["DeptName"].Trim());
+*****
+

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>	
+<!DOCTYPE messages SYSTEM "[dtdname]">			
+<messages>
+<message id="[msgid]">
+<time day="[day]" month="[month]" year="[year]" hr="[hour]" min="[minutes]" sec="[seconds]"/>
+<signal id="supplier-problem"/>
+<stage step="[stage]"/>
+<item>
+<pii>[piinumber]</pii>
+</item>
+<supplier-info>
+<problems>
+<problem><problem-type type="[problemtypecode]"/>		
+<problem-remark>[problemremarks]</problem-remark>	
+<file-attached>[zipfilename]</file-attached>
+</problem>
+</problems>
+</supplier-info>
+</message>
+</messages>

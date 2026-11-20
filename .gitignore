@@ -1,0 +1,71 @@
+# ====================================================================
+# .NET / Visual Studio Build & Artifact Exclusions
+# ====================================================================
+[Bb]in/
+[Oo]bj/
+*.user
+*.userosscache
+*.sln.docstates
+*.suo
+.vs/
+.vscode/
+TestResults/
+*.resharper
+*.DotSettings.user
+
+# ====================================================================
+# Node / Frontend Build & Artifact Exclusions
+# ====================================================================
+node_modules/
+dist/
+build/
+coverage/
+.npm
+.yarn/cache
+.yarn/unplugged
+.pnp.*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ====================================================================
+# Secrets & Environment Configurations (DO NOT COMMIT CREDENTIALS)
+# ====================================================================
+# Protect backend database credentials and connection strings
+appsettings*.json
+!appsettings.Example.json
+!appsettings.*.Example.json
+
+# Protect frontend environment files
+.env
+.env.*
+!.env.example
+
+# Legacy Web.config files with embedded plain-text passwords
+**/PTSQuery/Web*.config
+**/ForSpringerPTSQuery/**/Web*.config
+**/ForSpringerPTSQuery/**/bin/
+**/PreRequisites/*.exe
+
+# ====================================================================
+# User Uploads, Large Archives & Binary Installers
+# ====================================================================
+*.zip
+*.rar
+*.7z
+*.tar.gz
+*.exe
+Uploads/
+**/Uploads/**
+logs/
+**/logs/**
+*.log
+
+# ====================================================================
+# OS & Miscellaneous
+# ====================================================================
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store

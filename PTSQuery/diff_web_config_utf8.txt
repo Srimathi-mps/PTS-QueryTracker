@@ -1,0 +1,33 @@
+﻿Comparing files D:\SRIMATHI\PROJECTS\004_PTSQUERY\PTSQUERY\Web.config and D:\SRIMATHI\PROJECTS\004_PTSQUERY\FORSPRINGERPTSQUERY\PTSQUERY\WEB.CONFIG
+***** D:\SRIMATHI\PROJECTS\004_PTSQUERY\PTSQUERY\Web.config
+n++<?xml version="1.0"?>
+<configuration>
+***** D:\SRIMATHI\PROJECTS\004_PTSQUERY\FORSPRINGERPTSQUERY\PTSQUERY\WEB.CONFIG
+<?xml version="1.0"?>
+<configuration>
+*****
+
+***** D:\SRIMATHI\PROJECTS\004_PTSQUERY\PTSQUERY\Web.config
+   
+    <add key="LogPath" value="\\10.42.4.54\commonshare\Log\CTS"/>
+    <add key="ArticleType" value="1"/>
+***** D:\SRIMATHI\PROJECTS\004_PTSQUERY\FORSPRINGERPTSQUERY\PTSQUERY\WEB.CONFIG
+   
+    <!--<add key="LogPath" value="\\10.42.4.54\commonshare\Log\CTS"/>-->
+    <add key="LogPath" value="D:\Srimathi\Projects\004_PTSQuery\ForSpringerPTSQuery\PTSQuery\Logs"/> <!-- Changed by srimathi o
+n 28-Apr-2026 -->
+    <add key="ArticleType" value="1"/>
+*****
+
+***** D:\SRIMATHI\PROJECTS\004_PTSQUERY\PTSQUERY\Web.config
+    <add key="tempSignalFilePath" value="[SC_Macipd]\[stage]\"/>
+    <add key="tempZipFilePath" value="\\10.42.4.54\Bkcommonshare\Queries\[customer]\[journal]\INSTRUCTIONS\[article]"/>
+        <!-- <add key="tempZipFilePath" value="\\10.42.4.54\BkUserworkarea\Queries\[customer]\[journal]\INSTRUCTIONS\[article]"
+***** D:\SRIMATHI\PROJECTS\004_PTSQUERY\FORSPRINGERPTSQUERY\PTSQUERY\WEB.CONFIG
+    <add key="tempSignalFilePath" value="[SC_Macipd]\[stage]\"/>
+    <!--<add key="tempZipFilePath" value="\\10.42.4.54\Bkcommonshare\Queries\[customer]\[journal]\INSTRUCTIONS\[article]"/>-->
+    <add key="tempZipFilePath" value="D:\Srimathi\Projects\004_PTSQuery\ForSpringerPTSQuery\PTSQuery\TempZip\[customer]\[journa
+l]\INSTRUCTIONS\[article]"/> <!-- Changed by srimathi on 28-Apr-2026 -->
+        <!-- <add key="tempZipFilePath" value="\\10.42.4.54\BkUserworkarea\Queries\[customer]\[journal]\INSTRUCTIONS\[article]"
+*****
+

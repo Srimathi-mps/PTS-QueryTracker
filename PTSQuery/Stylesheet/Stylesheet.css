@@ -1,0 +1,181 @@
+﻿body
+{
+}
+
+.PTSLabelNew
+{
+	font-family:Verdana,Arial;
+	font-size:11px;
+	font-weight:normal;
+	
+	font-weight:bold;
+	/*width: 11%;
+	max-width:11%;*/
+	text-align:right;
+	
+	padding-right: 10px;
+    vertical-align:text-top;
+}
+.PTSControl
+{
+	font-family:Verdana,Arial;
+	font-size:11px;
+	font-weight:normal;
+	text-align:left;
+	/*padding-left: 5px;*/
+	padding-right: 10px;
+	width:30%;
+	max-height:100%;
+}
+
+.PTSLabel
+{
+	font-family:Verdana,Arial;
+	font-size:11px;
+	font-weight:normal;
+	
+}
+.PTSCombo
+{
+	font-family:Verdana,Arial;
+	font-size:11px;
+	font-weight:normal;
+	height:25px;
+	width:100%;	
+}
+.PTSTextbox
+{
+	font-family:Verdana,Arial;
+	font-size:11px;
+	font-weight:normal;
+	height:17px;
+	border-bottom-style:solid;
+	border-width:1px;
+	border-color:Black;
+}
+.PTSTableRow
+{
+	height:30px;
+}
+.gridText
+{
+	font-family:Verdana,Arial;
+	font-size:11px;
+	font-weight:normal;
+	height:15px;
+}
+.gridHeading
+{
+	font-family:Verdana,Arial;
+	font-size:12px;
+	font-weight:bold;
+}
+.errorMessage
+{
+	font-family:Verdana,Arial;
+	font-size:11px;
+	font-weight:normal;
+	color:Red;
+	border:none;
+}
+.articlePanel
+{
+    font-family: Verdana,Arial;
+    font-size: 11px;
+    font-weight: normal;
+    width: auto;
+}
+.volumeIssuePanel
+{
+    font-family: Verdana,Arial;
+    font-size: 11px;
+    font-weight: normal;
+    width: 189px;
+}
+.UserRoleLabel
+{
+	font-family:Verdana,Arial;
+	font-size:11px;
+	font-weight:normal;
+	width:100px;
+}
+
+
+.button{
+  border:1px solid #333;
+  background:#6479fd;
+}
+.button:hover{
+  background:#a4a9fd;
+}
+.dialog{
+  border:5px solid #666;
+  padding:10px;
+  background:#3A3A3A;
+  position:absolute;
+  display:none;
+}
+.dialog label{
+  display:inline-block;
+  color:#cecece;
+}
+input[type=text]{
+  border:1px solid #333;
+  display:inline-block;
+  margin:5px;
+}
+#btnOK{
+  border:1px solid #000;
+  background:#ff9999;
+  margin:5px;
+}
+
+#btnOK:hover{
+  border:1px solid #000;
+  background:#ffacac;
+}
+
+.errorMessageText
+{
+	font-family:Verdana,Arial;
+	font-size:15px;
+	font-weight:normal;
+	color:Red;
+	border:none;
+	font-weight:bold;
+	text-align:center;
+}
+
+ 
+.linkbutton
+{
+	text-decoration:underline;
+	 
+}
+ /*Style for grid view*/ 
+.grid-view  { padding: 0; margin:0;border:none;font-family:Tahoma,Verdana, Arial ;font-size:12px;}
+.grid-view th{color:#003F81;background-color: #DEDEDE;padding:4px; margin:0px;font-size:12px;vertical-align: middle;text-align: center;font-weight: bold; border:1px solid #A7CBE3; }
+.grid-view th a { color:#003F81; text-decoration:none}
+.grid-view th a:hover { color:#000000;text-decoration:underline}
+.grid-view td{color:#003F81; background-color:#ffffff; text-align:left; padding:3px; margin:0px; padding-left:2px;border:1px solid #A7CBE3; }
+.grid-view td.right{color:#003F81; background-color:#ffffff; text-align:right; padding:3px; margin:0px;border:1px solid #A7CBE3; }
+.grid-view td a { color:#003F81;text-decoration:underline;}
+.grid-view td a:hover { color:#003F81;text-decoration:underline}
+.grid-view tr.alternate td{ color:#003F81;background-color:#F5F5F5; padding:3px; margin:0px; padding-left:2px;text-align:left;border:1px solid #A7CBE3;}
+.grid-view tr.paging td {  color:#003F81; background-color: #DEDEDE;vertical-align: middle;text-align:right;padding:1px;  border:1px solid ##A7CBE3;}
+.grid-view tr.paging td  a { color:#003F81; text-decoration:underline; margin:4px;  }
+.grid-view tr.paging td a:hover { color:#003F81; text-decoration:blink;  }
+table.tbStyle1 .grid-view  { padding: 0; margin:0;border:none;font-family:Tahoma,Verdana, Arial ;font-size:14px;}
+table.tbStyle1 .grid-view th{color:#003F81;background-color: #DEDEDE;padding:2px; margin:0px;font-size:14px;vertical-align: middle;text-align: center;font-weight: bold; border:1px solid #A7CBE3; }
+table.tbStyle1 .grid-view th a { color:#003F81; text-decoration:none}
+table.tbStyle1 .grid-view th a:hover { color:#000000;text-decoration:underline}
+table.tbStyle1 .grid-view td{color:#003F81; background-color:#ffffff; text-align:left;  width:auto; padding:2px; margin:0px; padding-left:2px;border:1px solid #A7CBE3; }
+table.tbStyle1 .grid-view td.right{color:#003F81; background-color:#ffffff; text-align:right; padding:2px; margin:0px;border:1px solid #A7CBE3; }
+table.tbStyle1 .grid-view td a { color:#003F81;text-decoration:blink;}
+table.tbStyle1 .grid-view td a:hover { color:#003F81;text-decoration:underline}
+table.tbStyle1 .grid-view tr.alternate td{ color:#003F81;background-color:#F5F5F5; padding:2px; margin:0px; padding-left:2px;text-align:left;border:1px solid #A7CBE3;}
+table.tbStyle1 .grid-view tr.alternate-right td{ color:#003F81;background-color:#F5F5F5; padding:2px; margin:0px; padding-left:2px;text-align:left;border:1px solid #A7CBE3;}
+table.tbStyle1 .grid-view tr.paging td {  color:#003F81; background-color: #DEDEDE;vertical-align: middle;text-align:right;padding:1px;  border:1px solid ##A7CBE3;}
+table.tbStyle1 .grid-view tr.paging td  a { color:#003F81; text-decoration:underline; margin:2px;  }
+table.tbStyle1 .grid-view tr.paging td a:hover { color:#003F81; text-decoration:blink;  }
+

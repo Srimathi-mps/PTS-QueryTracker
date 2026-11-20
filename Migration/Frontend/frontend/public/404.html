@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Communication Tracker</title>
+    <script>
+      // Save the full path (minus the /CTSUI base) into sessionStorage,
+      // then redirect to the app root so index.html loads.
+      // index.html will read this and navigate to the correct route.
+      var base  = '/CTSUI';
+      var path  = window.location.pathname;
+      var route = path.startsWith(base) ? path.slice(base.length) : path;
+      var search = window.location.search;
+      sessionStorage.setItem('spa_redirect', route + search);
+      window.location.replace(base + '/');
+    </script>
+  </head>
+  <body></body>
+</html>

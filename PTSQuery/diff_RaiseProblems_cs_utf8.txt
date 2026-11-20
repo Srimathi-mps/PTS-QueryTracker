@@ -1,0 +1,274 @@
+﻿Comparing files D:\SRIMATHI\PROJECTS\004_PTSQUERY\PTSQUERY\RaiseProblems.aspx.cs and D:\SRIMATHI\PROJECTS\004_PTSQUERY\FORSPRINGERPTSQUERY\PTSQUERY\RAISEPROBLEMS.ASPX.CS
+***** D:\SRIMATHI\PROJECTS\004_PTSQUERY\PTSQUERY\RaiseProblems.aspx.cs
+n++using System;
+using System.Collections;
+***** D:\SRIMATHI\PROJECTS\004_PTSQUERY\FORSPRINGERPTSQUERY\PTSQUERY\RAISEPROBLEMS.ASPX.CS
+using System;
+using System.Collections;
+*****
+
+***** D:\SRIMATHI\PROJECTS\004_PTSQUERY\PTSQUERY\RaiseProblems.aspx.cs
+        {
+                        //WriteLog("Soumya " + Session["Username"]);
+            if (System.Web.HttpContext.Current.Request.QueryString["Username"] != null)
+***** D:\SRIMATHI\PROJECTS\004_PTSQUERY\FORSPRINGERPTSQUERY\PTSQUERY\RAISEPROBLEMS.ASPX.CS
+        {
+            //WriteLog("Soumya " + Session["Username"]);
+            // "TUFDMDA5MjU4-8ZNxmTXKXWQ%3d"
+            //debug
+            //Session["Encrypted User"] = "TUFDMDA5MjU4-8ZNxmTXKXWQ%3d";
+
+            if (System.Web.HttpContext.Current.Request.QueryString["Username"] != null)
+*****
+
+***** D:\SRIMATHI\PROJECTS\004_PTSQUERY\PTSQUERY\RaiseProblems.aspx.cs
+            }
+            
+              string User = Global.Validate();
+           
+
+***** D:\SRIMATHI\PROJECTS\004_PTSQUERY\FORSPRINGERPTSQUERY\PTSQUERY\RAISEPROBLEMS.ASPX.CS
+            }
+            //debug
+           // string User = "mac009258";
+            //string User = Global.Validate();
+            string User = "MAC014393"; // Changed by srimathi on 28-Apr-2026
+
+*****
+
+***** D:\SRIMATHI\PROJECTS\004_PTSQUERY\PTSQUERY\RaiseProblems.aspx.cs
+                    WriteLog("Line2");
+                    FillCustomerDDL();
+***** D:\SRIMATHI\PROJECTS\004_PTSQUERY\FORSPRINGERPTSQUERY\PTSQUERY\RAISEPROBLEMS.ASPX.CS
+                    WriteLog("Line2");
+                    StageDropDown1.Visible = false;
+                    FillCustomerDDL();
+*****
+
+***** D:\SRIMATHI\PROJECTS\004_PTSQUERY\PTSQUERY\RaiseProblems.aspx.cs
+                clearControl("ddl", (Control)ArticleDropDown);
+                //clearControl("ddl", (Control)VolumeDropDown);
+***** D:\SRIMATHI\PROJECTS\004_PTSQUERY\FORSPRINGERPTSQUERY\PTSQUERY\RAISEPROBLEMS.ASPX.CS
+                clearControl("ddl", (Control)ArticleDropDown);
+                //added by divya 09-02-2026
+                clearControl("txt", (Control)TextBox3);
+                //clearControl("ddl", (Control)VolumeDropDown);
+*****
+
+***** D:\SRIMATHI\PROJECTS\004_PTSQUERY\PTSQUERY\RaiseProblems.aspx.cs
+                {
+                    int CustomerID = Convert.ToInt32(CustomerDropDown.SelectedValue.ToString().Trim());
+***** D:\SRIMATHI\PROJECTS\004_PTSQUERY\FORSPRINGERPTSQUERY\PTSQUERY\RAISEPROBLEMS.ASPX.CS
+                {
+                    
+                    int CustomerID = Convert.ToInt32(CustomerDropDown.SelectedValue.ToString().Trim());
+*****
+
+***** D:\SRIMATHI\PROJECTS\004_PTSQUERY\PTSQUERY\RaiseProblems.aspx.cs
+                }
+                else
+***** D:\SRIMATHI\PROJECTS\004_PTSQUERY\FORSPRINGERPTSQUERY\PTSQUERY\RAISEPROBLEMS.ASPX.CS
+                }
+                else if (StageDropDown1.SelectedIndex > 0)
+                {
+
+                    int CustomerID = Convert.ToInt32(CustomerDropDown.SelectedValue.ToString().Trim());
+                    int SubStageID = Convert.ToInt32(StageDropDown1.SelectedValue.ToString().Trim());
+
+                    objPTSProblem.CustomerCode = CustomerID;
+                    objPTSProblem.JournalCode = Convert.ToInt32(JournalDropDown.SelectedValue.Trim());
+
+                    //Modified by Sathish.J on 08-May-2018
+                    //objPTSProblem.Article = ArticleDropDown.SelectedItem.Text;
+                    objPTSProblem.Article = Chapter_selection1();
+
+                    //if (VolumeDropDown.SelectedIndex >= 0)
+                    //    objPTSProblem.Volume = VolumeDropDown.SelectedItem.Text;
+                    //else
+                    objPTSProblem.Volume = "";
+                    //if (IssueDropDown.SelectedIndex >= 0)
+                    //    objPTSProblem.Issue = IssueDropDown.SelectedItem.Text;
+                    //else
+                    objPTSProblem.Issue = "";
+
+                    objPTSProblem.StageID = SubStageID;
+                    BindOpenedRequests(objPTSProblem);
+                }
+                else
+*****
+
+***** D:\SRIMATHI\PROJECTS\004_PTSQUERY\PTSQUERY\RaiseProblems.aspx.cs
+                objPTSProblem.Issue = issue.Trim();
+                objPTSProblem.StageID = Convert.ToInt16(StageDropDown.SelectedValue);
+                BindOpenedRequests(objPTSProblem); // now
+***** D:\SRIMATHI\PROJECTS\004_PTSQUERY\FORSPRINGERPTSQUERY\PTSQUERY\RAISEPROBLEMS.ASPX.CS
+                objPTSProblem.Issue = issue.Trim();
+                if (StageDropDown.SelectedValue != "0")
+                {
+                    objPTSProblem.StageID = Convert.ToInt16(StageDropDown.SelectedValue);
+                }
+                else if (StageDropDown1.SelectedValue != "0")
+                {
+                    objPTSProblem.StageID = Convert.ToInt16(StageDropDown1.SelectedValue);
+                }
+                BindOpenedRequests(objPTSProblem); // now
+*****
+
+***** D:\SRIMATHI\PROJECTS\004_PTSQUERY\PTSQUERY\RaiseProblems.aspx.cs
+
+                        int.TryParse(CustomerDropDown.SelectedValue.ToString().Trim(), out customerCode);
+                        roleID = ptsQueryService.GetRoleIDByUserName(userName, customerCode.ToString());
+***** D:\SRIMATHI\PROJECTS\004_PTSQUERY\FORSPRINGERPTSQUERY\PTSQUERY\RAISEPROBLEMS.ASPX.CS
+
+                        StageDropDown.Visible = false;
+                        StageDropDown1.Visible = false;
+                        
+                        
+                        int.TryParse(CustomerDropDown.SelectedValue.ToString().Trim(), out customerCode);
+                        
+                        roleID = ptsQueryService.GetRoleIDByUserName(userName, customerCode.ToString());
+*****
+
+***** D:\SRIMATHI\PROJECTS\004_PTSQUERY\PTSQUERY\RaiseProblems.aspx.cs
+                        #endregion
+
+                        FillJournalDDL(customerCode);
+                        //EnableDisablePrvRemark();
+***** D:\SRIMATHI\PROJECTS\004_PTSQUERY\FORSPRINGERPTSQUERY\PTSQUERY\RAISEPROBLEMS.ASPX.CS
+                        #endregion
+                        StageDropDown.Visible = false;
+                        StageDropDown1.Visible = false;
+                        if (customerCode == 163)
+                        {
+                            StageDropDown.Visible = true;
+                            FillJournalDDL(customerCode);
+                        }
+                        else if (customerCode == 877)
+                        {
+                            StageDropDown1.Visible = true;
+                            FillJournalDDL(customerCode);
+                        }
+                        //FillJournalDDL(customerCode);
+                        //EnableDisablePrvRemark();
+*****
+
+***** D:\SRIMATHI\PROJECTS\004_PTSQUERY\PTSQUERY\RaiseProblems.aspx.cs
+                //Session["OpenedRequestId"] = "1"; //gvwOpenedRequest.DataKeys[idx].Value.ToString().Trim();
+          //      GetDetails();
+
+***** D:\SRIMATHI\PROJECTS\004_PTSQUERY\FORSPRINGERPTSQUERY\PTSQUERY\RAISEPROBLEMS.ASPX.CS
+                //Session["OpenedRequestId"] = "1"; //gvwOpenedRequest.DataKeys[idx].Value.ToString().Trim();
+                //      GetDetails();
+
+*****
+
+***** D:\SRIMATHI\PROJECTS\004_PTSQUERY\PTSQUERY\RaiseProblems.aspx.cs
+
+                if (StageDropDown.SelectedValue == "0")
+                {
+***** D:\SRIMATHI\PROJECTS\004_PTSQUERY\FORSPRINGERPTSQUERY\PTSQUERY\RAISEPROBLEMS.ASPX.CS
+
+                if (StageDropDown.SelectedValue == "0" && StageDropDown1.SelectedValue == "0")
+                {
+*****
+
+***** D:\SRIMATHI\PROJECTS\004_PTSQUERY\PTSQUERY\RaiseProblems.aspx.cs
+                else
+                    Session["Stage"] = StageDropDown.SelectedValue;
+                if (DeptDropDown.SelectedValue == "0")
+***** D:\SRIMATHI\PROJECTS\004_PTSQUERY\FORSPRINGERPTSQUERY\PTSQUERY\RAISEPROBLEMS.ASPX.CS
+                else
+                    if (StageDropDown.SelectedValue != "0")
+                    {
+
+                        Session["Stage"] = StageDropDown.SelectedValue;
+                    }
+                    else if (StageDropDown1.SelectedValue != "0")
+                    {
+
+                        Session["Stage"] = StageDropDown1.SelectedValue;
+                    }
+                if (DeptDropDown.SelectedValue == "0")
+*****
+
+***** D:\SRIMATHI\PROJECTS\004_PTSQUERY\PTSQUERY\RaiseProblems.aspx.cs
+                //Response.Redirect("RaiseProblemsSubmission.aspx");
+                Response.Redirect("RaiseProblemsSubmission.aspx?Username=" + Global.UserName + "&CustName=" + CustomerDropDown.
+SelectedItem.Text.Trim() + "&JourName=" + JournalDropDown.SelectedItem.Text.Trim() + "&StageName=" + StageDropDown.SelectedItem
+.Text.Trim() + "&DeptName=" + DeptDropDown.SelectedItem.Text.ToString() + "&DeptValue=" + DeptDropDown.SelectedValue.ToString()
+, false);
+            }
+***** D:\SRIMATHI\PROJECTS\004_PTSQUERY\FORSPRINGERPTSQUERY\PTSQUERY\RAISEPROBLEMS.ASPX.CS
+                //Response.Redirect("RaiseProblemsSubmission.aspx");
+                if (StageDropDown.SelectedValue != "0")
+                {
+                    Response.Redirect("RaiseProblemsSubmission.aspx?Username=" + Global.UserName + "&CustName=" + CustomerDropD
+own.SelectedItem.Text.Trim() + "&JourName=" + JournalDropDown.SelectedItem.Text.Trim() + "&StageName=" + StageDropDown.Selected
+Item.Text.Trim() + "&DeptName=" + DeptDropDown.SelectedItem.Text.ToString() + "&DeptValue=" + DeptDropDown.SelectedValue.ToStri
+ng(), false);
+                }
+                else if (StageDropDown1.SelectedValue != "0")
+                {
+                    Response.Redirect("RaiseProblemsSubmission.aspx?Username=" + Global.UserName + "&CustName=" + CustomerDropD
+own.SelectedItem.Text.Trim() + "&JourName=" + JournalDropDown.SelectedItem.Text.Trim() + "&StageName=" + StageDropDown1.Selecte
+dItem.Text.Trim() + "&DeptName=" + DeptDropDown.SelectedItem.Text.ToString() + "&DeptValue=" + DeptDropDown.SelectedValue.ToStr
+ing(), false);
+                }
+            }
+*****
+
+***** D:\SRIMATHI\PROJECTS\004_PTSQUERY\PTSQUERY\RaiseProblems.aspx.cs
+
+                if (StageDropDown.SelectedValue == "0")
+                {
+***** D:\SRIMATHI\PROJECTS\004_PTSQUERY\FORSPRINGERPTSQUERY\PTSQUERY\RAISEPROBLEMS.ASPX.CS
+
+                if (StageDropDown.SelectedValue == "0" && StageDropDown1.SelectedValue == "0")
+                {
+*****
+
+***** D:\SRIMATHI\PROJECTS\004_PTSQUERY\PTSQUERY\RaiseProblems.aspx.cs
+                else
+                    Session["Stage"] = StageDropDown.SelectedValue;
+                if (DeptDropDown.SelectedValue == "0")
+***** D:\SRIMATHI\PROJECTS\004_PTSQUERY\FORSPRINGERPTSQUERY\PTSQUERY\RAISEPROBLEMS.ASPX.CS
+                else
+                    if (StageDropDown.SelectedValue != "0")
+                    {
+
+                        Session["Stage"] = StageDropDown.SelectedValue;
+                    }
+                    else if (StageDropDown1.SelectedValue != "0")
+                    {
+
+                        Session["Stage"] = StageDropDown1.SelectedValue;
+                    }
+                if (DeptDropDown.SelectedValue == "0")
+*****
+
+***** D:\SRIMATHI\PROJECTS\004_PTSQUERY\PTSQUERY\RaiseProblems.aspx.cs
+                //Response.Redirect("RaiseProblemsSubmission.aspx");
+                Response.Redirect("RaiseProblemsSubmission.aspx?Username=" + Global.UserName + "&CustName=" + CustomerDropDown.
+SelectedItem.Text.Trim() + "&JourName=" + JournalDropDown.SelectedItem.Text.Trim() + "&StageName=" + StageDropDown.SelectedItem
+.Text.Trim() + "&DeptName=" + DeptDropDown.SelectedItem.Text.ToString() + "&DeptValue=" + DeptDropDown.SelectedValue.ToString()
+, false);
+            }
+***** D:\SRIMATHI\PROJECTS\004_PTSQUERY\FORSPRINGERPTSQUERY\PTSQUERY\RAISEPROBLEMS.ASPX.CS
+                //Response.Redirect("RaiseProblemsSubmission.aspx");
+                if (StageDropDown.SelectedValue != "0")
+                {
+                    Response.Redirect("RaiseProblemsSubmission.aspx?Username=" + Global.UserName + "&CustName=" + CustomerDropD
+own.SelectedItem.Text.Trim() + "&JourName=" + JournalDropDown.SelectedItem.Text.Trim() + "&StageName=" + StageDropDown.Selected
+Item.Text.Trim() + "&DeptName=" + DeptDropDown.SelectedItem.Text.ToString() + "&DeptValue=" + DeptDropDown.SelectedValue.ToStri
+ng(), false);
+                }
+                else if (StageDropDown1.SelectedValue != "0")
+                {
+                    Response.Redirect("RaiseProblemsSubmission.aspx?Username=" + Global.UserName + "&CustName=" + CustomerDropD
+own.SelectedItem.Text.Trim() + "&JourName=" + JournalDropDown.SelectedItem.Text.Trim() + "&StageName=" + StageDropDown1.Selecte
+dItem.Text.Trim() + "&DeptName=" + DeptDropDown.SelectedItem.Text.ToString() + "&DeptValue=" + DeptDropDown.SelectedValue.ToStr
+ing(), false);
+                }
+            }
+*****
+

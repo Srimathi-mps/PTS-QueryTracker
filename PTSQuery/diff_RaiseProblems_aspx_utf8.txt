@@ -1,0 +1,27 @@
+﻿Comparing files D:\SRIMATHI\PROJECTS\004_PTSQUERY\PTSQUERY\RaiseProblems.aspx and D:\SRIMATHI\PROJECTS\004_PTSQUERY\FORSPRINGERPTSQUERY\PTSQUERY\RAISEPROBLEMS.ASPX
+***** D:\SRIMATHI\PROJECTS\004_PTSQUERY\PTSQUERY\RaiseProblems.aspx
+                                    <asp:ListItem Value="2">S200</asp:ListItem>
+                                    <asp:ListItem Value="3">S300</asp:ListItem>                             
+                                    <asp:ListItem Value="4">ALL</asp:ListItem>
+                                </asp:DropDownList>
+***** D:\SRIMATHI\PROJECTS\004_PTSQUERY\FORSPRINGERPTSQUERY\PTSQUERY\RAISEPROBLEMS.ASPX
+                                    <asp:ListItem Value="2">S200</asp:ListItem>
+                                    <asp:ListItem Value="3">S300</asp:ListItem>
+                                                                        <asp:ListItem Value="4">ALL</asp:ListItem>
+                                </asp:DropDownList>
+                                <asp:DropDownList ID="StageDropDown1" runat="server" CssClass="PTSCombo" AutoPostBack="true"
+                                    OnSelectedIndexChanged="StageDropDown_SelectedIndexChanged">
+                                    <asp:ListItem Value="0">-Select-</asp:ListItem>
+                                    <asp:ListItem Value="35">S5</asp:ListItem>
+                                    <asp:ListItem Value="36">S50</asp:ListItem>
+                                    <asp:ListItem Value="37">S200</asp:ListItem>
+                                    <asp:ListItem Value="38">S300-eProof</asp:ListItem>
+                                    <asp:ListItem Value="39">S300-PerformProof</asp:ListItem>
+                                    <asp:ListItem Value="40">S600</asp:ListItem>
+                                    <asp:ListItem Value="41">S600-EvaluateEPUB</asp:ListItem>
+                                    <asp:ListItem Value="42">S650-eProof</asp:ListItem>
+                                    <asp:ListItem Value="43">S650-PerformProof</asp:ListItem>
+                                                                        <asp:ListItem Value="10">ALL</asp:ListItem>
+                                </asp:DropDownList>
+*****
+
